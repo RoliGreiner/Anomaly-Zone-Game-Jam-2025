@@ -1,8 +1,10 @@
 extends CharacterBody2D
+class_name Player
 
-@export var speed: int = 500
+@export var speed: float = 1500.0
+@export var damage: float = 20.0
+@export var dodge_speed: float = 50.0;
 @export var current_state: states = states.MOVE
-@export var dodge_speed: int = 20;
 
 var dodge_couldown: bool = false
 
@@ -28,6 +30,7 @@ func _physics_process(delta: float) -> void:
 	
 	velocity.normalized()
 	move_and_slide()
+	$CollisionShape2D.disabled = false
 
 func move_state(delta: float):
 	move(delta)
@@ -36,6 +39,7 @@ func move_state(delta: float):
 		current_state = states.DODGE
 
 func dodge_state(delta: float):
+	$CollisionShape2D.disabled = true
 	move(delta)
 	
 	velocity *= dodge_speed
@@ -44,4 +48,4 @@ func dodge_state(delta: float):
 
 func move(delta: float):
 	var input_direction = Input.get_vector("left", "right", "up", "down")
-	velocity = input_direction * speed * delta * 50
+	velocity = input_direction * speed * delta
