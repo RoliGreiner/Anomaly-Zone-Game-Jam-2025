@@ -26,3 +26,5 @@ shape = SubResource("RectangleShape2D_fbpn7")
 shape = SubResource("CircleShape2D_lf5u5")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
