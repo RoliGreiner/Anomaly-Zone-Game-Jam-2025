@@ -8,7 +8,6 @@ signal attack_player(damage: int)
 func _ready() -> void:
 	for i in range(number_of_enemies):
 		var enemy: Enemy = load(enemy_scene).instantiate()
-		enemy.Create()
 		enemy.attack_player.connect(PlayerIsAttacked)
 		add_child(enemy)
 
