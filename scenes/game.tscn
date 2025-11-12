@@ -11,6 +11,7 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-2310, -613, 2941, -575
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lbhrr")
+bullet_scene = "uid://b7sr72vchlgx2"
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(495, 136)

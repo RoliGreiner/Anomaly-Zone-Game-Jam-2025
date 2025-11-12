@@ -2,9 +2,12 @@ extends CharacterBody2D
 class_name Enemy
 
 @export var speed: int = 1000
+@export var max_health: int = 100
+@export var health: float
 @export var damage: float = 10.0
 @export var distance_from_player: int = 30
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
+@onready var healt_bar: ProgressBar = $healthBar
 
 signal attack_player
 
@@ -14,6 +17,10 @@ func _init() -> void:
 	position = Vector2(pos_x, pos_y)
 
 func _ready() -> void:
+	health = max_health
+	healt_bar.max_value = max_health
+	healt_bar.value = health
+	
 	navigation_agent.path_desired_distance = 10.0
 	navigation_agent.target_desired_distance = 10.0
 	
@@ -35,6 +42,13 @@ func ActorSetup() -> void:
 	await get_tree().physics_frame
 	
 	navigation_agent.target_position = Global.player_position
+
+func ReduceHealth(amount: int):
+	health -= amount
+	healt_bar.value = health
+	if health < 0:
+		queue_free()
+	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
