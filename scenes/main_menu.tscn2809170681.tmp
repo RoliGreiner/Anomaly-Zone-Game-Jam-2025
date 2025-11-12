@@ -13,16 +13,6 @@ grow_vertical = 2
 script = ExtResource("1_l6cm7")
 game_scene = "uid://stbi58t5etjk"
 
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -1
-layout_mode = 0
-offset_left = -8.0
-offset_top = 20.0
-offset_right = 1757.3334
-offset_bottom = 1013.0
-texture = ExtResource("2_ekxnf")
-expand_mode = 1
-
 [node name="Main" type="Control" parent="."]
 anchors_preset = 0
 offset_right = 40.0
@@ -56,44 +46,18 @@ theme_override_colors/font_color = Color(0.8745098, 0, 0, 1)
 text = "Exit game"
 
 [node name="OptionsMenu" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="VolumeSlider" type="HSlider" parent="OptionsMenu"]
+[node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 64.0
-offset_top = 256.0
-offset_right = 576.0
-offset_bottom = 352.0
-
-[node name="VolumeText" type="Label" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 65.0
-offset_top = 256.0
-offset_right = 576.0
-offset_bottom = 295.0
-theme_override_font_sizes/font_size = 27
-text = "Volume"
-horizontal_alignment = 1
-
-[node name="ToggleFullscreen" type="CheckButton" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 360.0
-offset_right = 576.0
-offset_bottom = 456.0
-theme_override_font_sizes/font_size = 27
-text = "Toggle Fullscreen"
-alignment = 1
-
-[node name="BackToMain" type="Button" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 464.0
-offset_right = 576.0
-offset_bottom = 512.0
+offset_left = -10.0
+offset_top = 19.0
+offset_right = 1755.3334
+offset_bottom = 1012.0
+texture = ExtResource("2_ekxnf")
+expand_mode = 1
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
@@ -135,6 +99,3 @@ vertical_alignment = 1
 [connection signal="pressed" from="Main/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Main/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="Main/Exit" to="." method="_on_exit_pressed"]
-[connection signal="value_changed" from="OptionsMenu/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="pressed" from="OptionsMenu/ToggleFullscreen" to="." method="_on_toggle_fullscreen_pressed"]
-[connection signal="pressed" from="OptionsMenu/BackToMain" to="." method="_on_button_pressed"]
