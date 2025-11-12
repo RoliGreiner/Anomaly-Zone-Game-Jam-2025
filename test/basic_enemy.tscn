@@ -28,4 +28,17 @@ shape = SubResource("CircleShape2D_lf5u5")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
+[node name="healthBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(100, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 1
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

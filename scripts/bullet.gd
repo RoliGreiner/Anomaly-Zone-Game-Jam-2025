@@ -15,3 +15,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	queue_free()
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body is Enemy:
+		body.ReduceHealth(20)
+		queue_free()
