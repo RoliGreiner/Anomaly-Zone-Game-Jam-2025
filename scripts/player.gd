@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
+@export var level: int = 1
 @export var speed: int = 2000
 @export var healt: float = 100.0
 @export var damage: float = 20.0
@@ -37,7 +38,7 @@ func _physics_process(delta: float) -> void:
 
 func idle_state(delta: float) -> void:
 	if Input.get_vector("left", "right", "up", "down") != Vector2.ONE:
-		print("State changed to %s" % current_state)
+		print("State changed to %s" % states.keys()[current_state])
 		current_state = states.MOVE
 
 func move_state(delta: float) -> void:

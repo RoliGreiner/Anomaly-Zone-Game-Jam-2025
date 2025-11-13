@@ -10,11 +10,10 @@ class_name Enemy
 @onready var healt_bar: ProgressBar = $healthBar
 
 signal attack_player
+signal died
 
 func _init() -> void:
-	var pos_x: float = Global.player_position.x + randf_range(-300, 300)
-	var pos_y: float = Global.player_position.y + randi_range(-300, 300)
-	position = Vector2(pos_x, pos_y)
+	pass
 
 func _ready() -> void:
 	health = max_health
@@ -38,6 +37,9 @@ func _physics_process(delta):
 		velocity = current_agent_position.direction_to(next_path_position) * speed * delta
 		move_and_slide()
 
+func Create(spawn_position: Vector2) -> void:
+	position = spawn_position
+
 func ActorSetup() -> void:
 	await get_tree().physics_frame
 	
@@ -47,8 +49,8 @@ func ReduceHealth(amount: int):
 	health -= amount
 	healt_bar.value = health
 	if health < 0:
+		died.emit()
 		queue_free()
-	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is Player:
