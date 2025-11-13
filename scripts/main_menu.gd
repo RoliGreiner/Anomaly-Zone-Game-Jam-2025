@@ -1,6 +1,8 @@
 extends Control
 
 @export_file("*.tscn") var game_scene
+@export var main: Control
+@export var options: Control
 
 
 func _on_start_pressed() -> void:
@@ -12,14 +14,14 @@ func _on_exit_pressed() -> void:
 
 func _on_options_pressed() -> void:
 	# Főmenüből Optionsbe
-	$Main.visible = false
-	$OptionsMenu.visible = true
+	main.visible = false
+	options.visible = true
 
 
 func _on_button_pressed() -> void:
 	# Optionsből Főmenübe
-	$OptionsMenu.visible = false
-	$Main.visible = true
+	options.visible = false
+	main.visible = true
 
 
 func _on_toggle_fullscreen_pressed() -> void:
