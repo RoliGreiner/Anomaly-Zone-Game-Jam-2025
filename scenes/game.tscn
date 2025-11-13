@@ -5,13 +5,15 @@
 [ext_resource type="Texture2D" uid="uid://y0vrkel4nud7" path="res://icon.svg" id="4_lbhrr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lnu2h"]
-vertices = PackedVector2Array(2930.8516, -565.0703, 2896.1406, 1803.7969, -2193.4375, 1704.1797, -2299.5234, -602.9219)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-2310, -613, 2941, -575, 2906, 1814, -2203, 1714)])
+vertices = PackedVector2Array(1655.7578, -653.8828, 1799.1328, 1156.4766, -625.5781, 1043.4688, -554.40625, -627.1094)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(0, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-564, -637, 1665, -664, 1810, 1167, -636, 1053)])
+sample_partition_type = 1
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lbhrr")
 bullet_scene = "uid://b7sr72vchlgx2"
+enemy_types = PackedStringArray("uid://claos1vdcej5g")
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(495, 136)
@@ -20,7 +22,25 @@ texture = ExtResource("4_lbhrr")
 
 [node name="EnemyManager" type="Node" parent="."]
 script = ExtResource("3_lnu2h")
-enemy_scene = "uid://claos1vdcej5g"
+
+[node name="EnemySpawnerCooldown" type="Timer" parent="."]
+wait_time = 20.0
+autostart = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+unique_name_in_owner = true
 navigation_polygon = SubResource("NavigationPolygon_lnu2h")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+horizontal_alignment = 1
+
+[connection signal="timeout" from="EnemySpawnerCooldown" to="." method="_on_enemy_spawner_cooldown_timeout"]
