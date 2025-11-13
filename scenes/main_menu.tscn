@@ -3,15 +3,19 @@
 [ext_resource type="Script" uid="uid://c5162jpqw0k0e" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Texture2D" uid="uid://duwqy4utuni6s" path="res://assets/fa.png" id="2_ekxnf"]
 
-[node name="Main menu" type="Control"]
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("main", "options")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_l6cm7")
 game_scene = "uid://stbi58t5etjk"
+main = NodePath("VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main")
+options = NodePath("VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -1
@@ -19,88 +23,33 @@ layout_mode = 0
 offset_left = -8.0
 offset_top = 20.0
 offset_right = 1757.3334
-offset_bottom = 1013.0
+offset_bottom = 1006.0
 texture = ExtResource("2_ekxnf")
 expand_mode = 1
 
-[node name="Main" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Start" type="Button" parent="Main"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 256.0
-offset_right = 576.0
-offset_bottom = 352.0
-theme_override_colors/font_color = Color(0.59955007, 0.9999998, 0.26008812, 1)
-text = "Start"
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 9.0
 
-[node name="Options" type="Button" parent="Main"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 360.0
-offset_right = 317.0
-offset_bottom = 456.0
-theme_override_colors/font_color = Color(0.41978207, 0.41978207, 0.41978207, 1)
-text = "Options"
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 
-[node name="Exit" type="Button" parent="Main"]
-layout_mode = 0
-offset_left = 323.0
-offset_top = 360.0
-offset_right = 576.0
-offset_bottom = 456.0
-theme_override_colors/font_color = Color(0.8745098, 0, 0, 1)
-text = "Exit game"
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
 
-[node name="OptionsMenu" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VolumeSlider" type="HSlider" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 256.0
-offset_right = 576.0
-offset_bottom = 352.0
-
-[node name="VolumeText" type="Label" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 65.0
-offset_top = 256.0
-offset_right = 576.0
-offset_bottom = 295.0
-theme_override_font_sizes/font_size = 27
-text = "Volume"
-horizontal_alignment = 1
-
-[node name="ToggleFullscreen" type="CheckButton" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 360.0
-offset_right = 576.0
-offset_bottom = 456.0
-theme_override_font_sizes/font_size = 27
-text = "Toggle Fullscreen"
-alignment = 1
-
-[node name="BackToMain" type="Button" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 464.0
-offset_right = 576.0
-offset_bottom = 512.0
-
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 64.0
-offset_top = 64.0
-offset_right = 576.0
-offset_bottom = 192.0
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.5647059, 0.38039216, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -112,29 +61,85 @@ theme_override_font_sizes/font_size = 90
 text = "The Device"
 horizontal_alignment = 1
 
-[node name="TeamName" type="Label" parent="."]
-layout_mode = 0
-offset_top = 604.0
-offset_right = 513.0
-offset_bottom = 648.0
+[node name="BoxContainer" type="BoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Main" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.59955007, 0.9999998, 0.26008812, 1)
+text = "Start"
+
+[node name="Options" type="Button" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.41978207, 0.41978207, 0.41978207, 1)
+text = "Options"
+
+[node name="Exit" type="Button" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8745098, 0, 0, 1)
+text = "Exit game"
+
+[node name="Options" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VolumeText" type="Label" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 27
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="ToggleFullscreen" type="CheckButton" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 27
+text = "Toggle Fullscreen"
+alignment = 1
+
+[node name="BackToMain" type="Button" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options"]
+layout_mode = 2
+text = "Backto main"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Info" type="BoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TeamName" type="Label" parent="VBoxContainer/Info"]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_font_sizes/font_size = 20
 text = "Boba Gang"
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VersionNo" type="Label" parent="."]
-layout_mode = 0
-offset_left = 639.0
-offset_top = 604.0
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="VersionNo" type="Label" parent="VBoxContainer/Info"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
 theme_override_font_sizes/font_size = 20
 text = "ver.:   pre-alpha"
-horizontal_alignment = 2
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="Main/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="Main/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Main/Exit" to="." method="_on_exit_pressed"]
-[connection signal="value_changed" from="OptionsMenu/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="pressed" from="OptionsMenu/ToggleFullscreen" to="." method="_on_toggle_fullscreen_pressed"]
-[connection signal="pressed" from="OptionsMenu/BackToMain" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Main/Exit" to="." method="_on_exit_pressed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options/ToggleFullscreen" to="." method="_on_toggle_fullscreen_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/BoxContainer/Options/BackToMain" to="." method="_on_button_pressed"]
