@@ -46,7 +46,7 @@ func PlayerShooting() -> void:
 	add_child(bullet)
 
 func UpdateMag() -> void:
-	$CanvasLayer/HBoxContainer/Mag.text = "%d/%d" % [player.mag_size, player.bullet_left]
+	$CanvasLayer/HBoxContainer/Mag.text = " Magazine %d/%d" % [player.mag_size, player.bullet_left]
 
 func UpdateHealt() -> void:
 	$CanvasLayer/HBoxContainer/Healt.text = "%d/%.1f" % [player.max_health, player.healt]

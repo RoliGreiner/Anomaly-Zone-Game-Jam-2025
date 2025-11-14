@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var target: Vector2
 var direction: Vector2
-var speed: float = 5000
+var speed: float = 20000
 
 func _ready() -> void:
 	direction = position.direction_to(target)
