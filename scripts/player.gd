@@ -5,6 +5,8 @@ class_name Player
 @export var speed: int = 3500
 @export var max_health: float = 100.0
 @export var healt: float = 100.0
+@export var exp: int = 0
+@export var exp_to_next_level: float = 100
 @export var damage: float = 20.0
 @export var rpm: int = 600
 @export var mag_size: int = 30
@@ -22,7 +24,7 @@ enum states {
 }
 
 signal shooting
-signal damaged
+signal stats_update
 
 func _init() -> void:
 	bullet_left = mag_size
@@ -88,7 +90,7 @@ func move(delta: float) -> void:
 
 func reduce_health(amount: int) -> void:
 	healt -= amount
-	damaged.emit()
+	stats_update.emit()
 	print("Player is damaged with: %.2f" % amount)
 	print("Currant health: %.2f" % healt)
 	if healt <= 0:
@@ -108,4 +110,20 @@ func _on_reloading_timeout() -> void:
 func Reloading() -> void:
 	is_reloading = true
 	$Reloading.start()
+
+func GainExp(amount: int) -> void:
+	exp += amount
+	if exp >= exp_to_next_level:
+		NewLevel()
+	stats_update.emit()
+
+func NewLevel() -> void:
+	print("Next level")
+	level += 1
+	exp -= exp_to_next_level
+	exp_to_next_level *= 1.2
 	
+	damage += randi_range(10, 20)
+	speed += 50
+	max_health += randi_range(10, 30)
+	healt = max_health

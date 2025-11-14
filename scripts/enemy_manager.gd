@@ -7,7 +7,8 @@ extends Node
 var rnd_position: Vector2
 var enemies_alive: Array[Enemy]
 
-signal attack_player(damage: int)
+signal attack_player(damage: float)
+signal enemy_killed(exp: int)
 
 func PlayerIsAttacked(damage: float):
 	attack_player.emit(damage)
@@ -45,10 +46,11 @@ func SpawnpointIsOnMap(spawn_point: Vector2) -> bool:
 	var delta = closest_point - spawn_point
 	return delta.is_zero_approx()
 
-func EnemyDied() -> void:
+func EnemyDied(exp: int) -> void:
 	for i in range(enemies_alive.size()):
 		if not is_instance_valid(enemies_alive[i]):
 			enemies_alive.remove_at(i)
 			break
+	enemy_killed.emit(exp)
 	print("Enemies alive")
 	print(enemies_alive)

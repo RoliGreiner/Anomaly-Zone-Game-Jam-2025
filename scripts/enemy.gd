@@ -49,7 +49,8 @@ func ReduceHealth(amount: int):
 	health -= amount
 	healt_bar.value = health
 	if health <= 0:
-		died.emit()
+		var exp_drop: int = randi_range(5, max_health / 10)
+		died.emit(exp_drop)
 		queue_free()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
