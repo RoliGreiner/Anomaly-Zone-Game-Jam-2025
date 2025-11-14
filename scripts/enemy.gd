@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Enemy
 
-@export var speed: int = 1000
+@export var speed: int = 2000
 @export var max_health: int = 100
 @export var health: float
 @export var damage: float = 10.0
@@ -48,7 +48,7 @@ func ActorSetup() -> void:
 func ReduceHealth(amount: int):
 	health -= amount
 	healt_bar.value = health
-	if health < 0:
+	if health <= 0:
 		died.emit()
 		queue_free()
 

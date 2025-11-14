@@ -1,8 +1,8 @@
 extends Node
 
 @export var number_of_enemies: int = 5
-@export var min_spawn_distance: int = 500
-@export var max_spawn_distance: int = 800
+@export var min_spawn_distance: int = 300
+@export var max_spawn_distance: int = 400
 @onready var navigation_region: NavigationRegion2D = %NavigationRegion2D
 var rnd_position: Vector2
 var enemies_alive: Array[Enemy]

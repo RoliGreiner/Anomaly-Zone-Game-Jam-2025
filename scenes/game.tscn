@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://stbi58t5etjk"]
+[gd_scene load_steps=13 format=3 uid="uid://stbi58t5etjk"]
 
 [ext_resource type="Script" uid="uid://bq7amhxauiouf" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://di5r2xofgp2uk" path="res://assets/backgroundtest.png" id="2_lbhrr"]
@@ -6,15 +6,45 @@
 [ext_resource type="Texture2D" uid="uid://y0vrkel4nud7" path="res://icon.svg" id="4_lbhrr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lnu2h"]
-vertices = PackedVector2Array(88.296875, 452.21875, 192, 316.54688, 192, 513.7422, 184.89844, 51.078125, 92.6875, -61.132813, 476.5703, -30.203125, 856.21875, 139.71875, 2051.9063, -501.96875, 2033.0781, 1614.9766, 847.78125, 531.27344, -1744.0625, 1609.0078, -145.71875, 548.28125, -332.39844, 521.6172, -528.3672, 404.64844, -1756.9297, -493.02344, -573.59375, 263.71875, -494.6328, 55.539063, 220.14063, 156.79688, -70.10156, -337.2578, -87.27344, -149.45313, -342.97656, -102.25, 488.39844, -321.71094)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 4, 5), PackedInt32Array(6, 7, 8), PackedInt32Array(9, 6, 8), PackedInt32Array(9, 8, 10), PackedInt32Array(2, 9, 10), PackedInt32Array(0, 2, 10), PackedInt32Array(11, 0, 10), PackedInt32Array(12, 11, 10), PackedInt32Array(13, 12, 10), PackedInt32Array(13, 10, 14), PackedInt32Array(15, 13, 14), PackedInt32Array(16, 15, 14), PackedInt32Array(17, 3, 5), PackedInt32Array(6, 17, 5), PackedInt32Array(18, 19, 20), PackedInt32Array(20, 16, 14), PackedInt32Array(6, 5, 21), PackedInt32Array(7, 6, 21), PackedInt32Array(14, 7, 21), PackedInt32Array(14, 21, 18), PackedInt32Array(20, 14, 18)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-1767, -503, 2062, -512, 2043, 1625, -1754, 1619)])
+vertices = PackedVector2Array(312, 1536, 447.5, 1578.5, -830.3281, 1578.5, -646.5, 1536, 161.67188, 1.46875, 125.9375, -34.25, 487.1875, -7.71875, 447.5, 1116, 312, 878.5, 214.0625, 197, -92.11719, -384.84375, -107.49219, -175.42969, -177, -194.0625, -845.27344, 1293.3281, -646.5, 878.5, 511.64063, -340.4922, 2003, -457.5, 2003, 1578.5, -1662.7734, 1336.1719, -1650.0703, 1578.5, -1711, 1578.5, -1711, -457.5, 1165, 1578.5, 1165, 1116, 161.67188, 392.53125, 18.53125, 535.6719, -177, 588.0625, -372.53125, 535.6719, -515.6719, 392.53125, -568.0625, 197, -515.6719, 1.46875, -372.53125, -141.67188)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 0, 2), PackedInt32Array(4, 5, 6), PackedInt32Array(7, 1, 0), PackedInt32Array(7, 0, 8), PackedInt32Array(9, 4, 6), PackedInt32Array(10, 11, 12), PackedInt32Array(3, 2, 13), PackedInt32Array(14, 3, 13), PackedInt32Array(15, 16, 17), PackedInt32Array(6, 15, 17), PackedInt32Array(18, 19, 20), PackedInt32Array(18, 20, 21), PackedInt32Array(13, 18, 21), PackedInt32Array(14, 13, 21), PackedInt32Array(17, 22, 23), PackedInt32Array(6, 17, 23), PackedInt32Array(6, 23, 7), PackedInt32Array(6, 7, 8), PackedInt32Array(9, 6, 8), PackedInt32Array(24, 9, 8), PackedInt32Array(25, 24, 8), PackedInt32Array(25, 8, 14), PackedInt32Array(26, 25, 14), PackedInt32Array(27, 26, 14), PackedInt32Array(27, 14, 21), PackedInt32Array(28, 27, 21), PackedInt32Array(29, 28, 21), PackedInt32Array(30, 29, 21), PackedInt32Array(31, 30, 21), PackedInt32Array(10, 12, 31), PackedInt32Array(10, 31, 21), PackedInt32Array(10, 21, 16), PackedInt32Array(10, 16, 15)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-1753, -500, 2045, -502, 2043, 1625, -1754, 1619)])
 sample_partition_type = 1
+agent_radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lbhrr"]
+radius = 360.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iywne"]
+size = Vector2(545.3793, 273.66354)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
+size = Vector2(758.62024, 287.54297)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5sy4"]
+size = Vector2(898.5, 597.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
+size = Vector2(657.5, 486)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0tnpc"]
+size = Vector2(3832, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vtaks"]
+size = Vector2(32, 2143)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lbhrr")
 bullet_scene = "uid://b7sr72vchlgx2"
 enemy_types = PackedStringArray("uid://claos1vdcej5g")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -1
+offset_left = -1774.0
+offset_top = -521.0
+offset_right = 2066.0
+offset_bottom = 1639.0
+texture = ExtResource("2_lbhrr")
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(2084, 1113)
@@ -32,11 +62,56 @@ autostart = true
 unique_name_in_owner = true
 navigation_polygon = SubResource("NavigationPolygon_lnu2h")
 
-[node name="Polygon2D" type="Polygon2D" parent="NavigationRegion2D"]
-polygon = PackedVector2Array(-61, -327, 478, -312, 467, -41, 70, -73, 176, 56, 213, 167, 846, 150, 838, 521, 202, 504, 202, 287, 82, 444, -147, 538, -329, 512, -520, 398, -563, 264, -486, 61, -338, -93, -78, -141)
+[node name="Lake" type="StaticBody2D" parent="NavigationRegion2D"]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NavigationRegion2D/Polygon2D"]
-polygon = PackedVector2Array(475, -310, 464, -24, 73, -73, 173, 56, 210, 173, 843, 144, 841, 524, 190, 509, 202, 278, 79, 449, -141, 541, -323, 521, -523, 392, -563, 255, -492, 56, -338, -90, -78, -147, -75, -335)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Lake"]
+position = Vector2(-177, 197)
+shape = SubResource("CircleShape2D_lbhrr")
+
+[node name="Base" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Base"]
+position = Vector2(197.53513, -196.2797)
+rotation = 0.073303826
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_iywne")
+
+[node name="Shop" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Shop"]
+position = Vector2(-1244.929, 1488.2853)
+rotation = -0.052359886
+shape = SubResource("RectangleShape2D_p57ef")
+
+[node name="Hospital" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Hospital"]
+position = Vector2(-167.25, 1207.25)
+shape = SubResource("RectangleShape2D_u5sy4")
+
+[node name="ParkingLot" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/ParkingLot"]
+position = Vector2(806.25, 1389)
+shape = SubResource("RectangleShape2D_gee14")
+
+[node name="Border" type="StaticBody2D" parent="NavigationRegion2D"]
+
+[node name="North" type="CollisionShape2D" parent="NavigationRegion2D/Border"]
+position = Vector2(144, -501)
+shape = SubResource("RectangleShape2D_0tnpc")
+
+[node name="South" type="CollisionShape2D" parent="NavigationRegion2D/Border"]
+position = Vector2(145, 1622)
+shape = SubResource("RectangleShape2D_0tnpc")
+
+[node name="West" type="CollisionShape2D" parent="NavigationRegion2D/Border"]
+position = Vector2(-1757, 561)
+shape = SubResource("RectangleShape2D_vtaks")
+
+[node name="East" type="CollisionShape2D" parent="NavigationRegion2D/Border"]
+position = Vector2(2049, 561)
+shape = SubResource("RectangleShape2D_vtaks")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -48,14 +123,33 @@ offset_bottom = 23.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -1
-offset_left = -1774.0
-offset_top = -521.0
-offset_right = 2066.0
-offset_bottom = 1639.0
-texture = ExtResource("2_lbhrr")
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+custom_minimum_size = Vector2(0, 50)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Mag" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+
+[node name="Healt" type="Label" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
 
 [connection signal="timeout" from="EnemySpawnerCooldown" to="." method="_on_enemy_spawner_cooldown_timeout"]
