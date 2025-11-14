@@ -24,7 +24,7 @@ shape = SubResource("RectangleShape2D_y25gk")
 texture = ExtResource("1_mkf8s")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.0
 one_shot = true
 
 [node name="Area2D" type="Area2D" parent="."]

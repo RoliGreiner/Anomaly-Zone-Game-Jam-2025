@@ -2,12 +2,20 @@ extends CharacterBody2D
 class_name Player
 
 @export var level: int = 1
-@export var speed: int = 2000
+@export var speed: int = 3500
+@export var max_health: float = 100.0
 @export var healt: float = 100.0
+@export var exp: int = 0
+@export var exp_to_next_level: float = 100
 @export var damage: float = 20.0
+@export var rpm: int = 600
+@export var mag_size: int = 30
+@export var bullet_left: int
 @export var dodge_speed: int = 50
 @export var current_state: states = states.IDLE
 @export var crosshair: Sprite2D
+
+var is_reloading = false
 
 enum states {
 	IDLE,
@@ -15,13 +23,28 @@ enum states {
 	DODGE,
 }
 
+signal shooting
+signal stats_update
+
+func _init() -> void:
+	bullet_left = mag_size
+
+func _ready() -> void:
+	$GunShooting.wait_time = 60.0 / rpm
+
 func _process(delta: float) -> void:
 	crosshair.position = get_local_mouse_position()
+	if $Reloading.is_stopped():
+		$ReloadingTimeLabel.text = ""
+	else:
+		var text = "Reloading %.1fs" % $Reloading.time_left
+		$ReloadingTimeLabel.text = text
+	
 	if $DodgeCouldown.is_stopped():
-		$Label.text = "You can dodge"
+		$DodgeCooldownLabel.text = "You can dodge"
 	else:
 		var text = "%.1fs" % $DodgeCouldown.time_left
-		$Label.text = text
+		$DodgeCooldownLabel.text = text
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -35,6 +58,10 @@ func _physics_process(delta: float) -> void:
 	velocity.normalized()
 	move_and_slide()
 	Global.player_position = position
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("reload") and $Reloading.is_stopped():
+		Reloading()
 
 func idle_state(delta: float) -> void:
 	if Input.get_vector("left", "right", "up", "down") != Vector2.ONE:
@@ -63,7 +90,40 @@ func move(delta: float) -> void:
 
 func reduce_health(amount: int) -> void:
 	healt -= amount
+	stats_update.emit()
 	print("Player is damaged with: %.2f" % amount)
 	print("Currant health: %.2f" % healt)
 	if healt <= 0:
 		get_tree().quit()
+
+func _on_gun_shooting_timeout() -> void:
+	if Input.is_action_pressed("shoot") and (current_state != states.DODGE) and (bullet_left > 0) and not is_reloading:
+		shooting.emit()
+		bullet_left -= 1
+		if bullet_left == 0:
+			Reloading()
+
+func _on_reloading_timeout() -> void:
+	bullet_left = mag_size
+	is_reloading = false
+
+func Reloading() -> void:
+	is_reloading = true
+	$Reloading.start()
+
+func GainExp(amount: int) -> void:
+	exp += amount
+	if exp >= exp_to_next_level:
+		NewLevel()
+	stats_update.emit()
+
+func NewLevel() -> void:
+	print("Next level")
+	level += 1
+	exp -= exp_to_next_level
+	exp_to_next_level *= 1.2
+	
+	damage += randi_range(10, 20)
+	speed += 50
+	max_health += randi_range(10, 30)
+	healt = max_health

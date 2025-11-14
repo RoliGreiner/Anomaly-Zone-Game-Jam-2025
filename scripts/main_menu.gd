@@ -5,34 +5,17 @@ extends Control
 @export var options: Control
 
 
-func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file(game_scene)
-
-func _on_exit_pressed() -> void:
-	get_tree().quit()
-
-
-func _on_options_pressed() -> void:
-	# Főmenüből Optionsbe
-	main.visible = false
-	options.visible = true
-
-
-func _on_button_pressed() -> void:
-	# Optionsből Főmenübe
-	options.visible = false
+func _ready() -> void:
+	main.settings.connect(SwapView)
+	main.start_game.connect(StartGame)
+	options.back.connect(SwapView)
+	
 	main.visible = true
+	options.visible = false
 
+func SwapView() -> void:
+	main.visible = not main.visible
+	options.visible = not options.visible
 
-func _on_toggle_fullscreen_pressed() -> void:
-	# Toggle Fullscreen
-	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-
-
-func _on_volume_slider_value_changed(value: float) -> void:
-	# Volume érték változtató (global.gd)
-	Global.volume = value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(value))
+func StartGame() -> void:
+	get_tree().change_scene_to_file(game_scene)
