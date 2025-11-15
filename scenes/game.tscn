@@ -118,9 +118,9 @@ shape = SubResource("RectangleShape2D_vtaks")
 position = Vector2(2049, 561)
 shape = SubResource("RectangleShape2D_vtaks")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="HUD"]
 unique_name_in_owner = true
 anchors_preset = 10
 anchor_right = 1.0
@@ -133,7 +133,7 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 custom_minimum_size = Vector2(0, 50)
 anchors_preset = 12
 anchor_top = 1.0
@@ -144,11 +144,11 @@ grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Ammunation" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="Ammunation" type="VBoxContainer" parent="HUD/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Mag" type="Label" parent="CanvasLayer/HBoxContainer/Ammunation"]
+[node name="Mag" type="Label" parent="HUD/HBoxContainer/Ammunation"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -159,18 +159,18 @@ theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Grenade" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Ammunation"]
+[node name="Grenade" type="HBoxContainer" parent="HUD/HBoxContainer/Ammunation"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HBoxContainer/Ammunation/Grenade"]
+[node name="TextureRect" type="TextureRect" parent="HUD/HBoxContainer/Ammunation/Grenade"]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_iywne")
 stretch_mode = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/Ammunation/Grenade"]
+[node name="Label" type="Label" parent="HUD/HBoxContainer/Ammunation/Grenade"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -179,12 +179,12 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="Level" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+[node name="Level" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -195,7 +195,7 @@ theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HBoxContainer/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="HUD/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
@@ -203,7 +203,7 @@ size_flags_vertical = 10
 max_value = 1.0
 show_percentage = false
 
-[node name="Healt" type="Label" parent="CanvasLayer/HBoxContainer"]
+[node name="Healt" type="Label" parent="HUD/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
