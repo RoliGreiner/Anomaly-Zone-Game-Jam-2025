@@ -79,10 +79,12 @@ one_shot = true
 
 [node name="GunShot" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_qlg0r")
+volume_db = -5.0
 max_polyphony = 30
 
 [node name="Reloading" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_qlg0r")
+volume_db = 10.0
 
 [connection signal="timeout" from="ShootingTimer" to="." method="_on_gun_shooting_timeout"]
 [connection signal="timeout" from="ReloadingTimer" to="." method="_on_reloading_timeout"]
