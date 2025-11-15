@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Global="*res://scripts/global.gd"
 
+[debug]
+
+settings/stdout/print_fps=true
+settings/stdout/print_gpu_profile=true
+
 [dotnet]
 
 project/assembly_name="Anomaly Zone Game Jam 2025"

@@ -91,6 +91,7 @@ func dodge_state(delta: float):
 	$CollisionShape2D.disabled = true
 	move(delta)
 	velocity *= dodge_speed
+	position += velocity / 500
 	current_state = states.MOVE
 	$CollisionShape2D.disabled = false
 	dodge_cooldown.start()

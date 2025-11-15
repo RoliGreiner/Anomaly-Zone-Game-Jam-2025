@@ -3,7 +3,7 @@ extends Node2D
 @export_file("*.tscn") var player_scene = "res://scenes/player.tscn"
 @export_file("*.tscn") var bullet_scene = "res://scenes/bullet.tscn"
 @export_file("*.tscn") var grenade_scene = "res://scenes/grenade.tscn"
-@onready var enemy_manager = $EnemyManager
+@export var enemy_manager: Node
 @export_file("*.tscn") var enemy_types: PackedStringArray
 
 var player: Player

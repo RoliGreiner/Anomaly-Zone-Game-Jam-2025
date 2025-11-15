@@ -34,10 +34,13 @@ size = Vector2(3832, 27)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vtaks"]
 size = Vector2(32, 2143)
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("enemy_manager")]
 script = ExtResource("1_lbhrr")
+player_scene = "uid://dcve70sqxk2u2"
 bullet_scene = "uid://b7sr72vchlgx2"
-enemy_types = PackedStringArray("uid://claos1vdcej5g")
+grenade_scene = "uid://32cfhnyp58w1"
+enemy_manager = NodePath("EnemyManager")
+enemy_types = PackedStringArray("uid://xq544wsp86tk")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -1
@@ -52,8 +55,9 @@ position = Vector2(2084, 1113)
 scale = Vector2(0.125, 0.125)
 texture = ExtResource("4_lbhrr")
 
-[node name="EnemyManager" type="Node" parent="."]
+[node name="EnemyManager" type="Node" parent="." node_paths=PackedStringArray("navigation_region")]
 script = ExtResource("3_lnu2h")
+navigation_region = NodePath("../NavigationRegion2D")
 
 [node name="EnemySpawnerCooldown" type="Timer" parent="."]
 wait_time = 20.0

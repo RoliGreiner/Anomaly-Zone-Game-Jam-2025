@@ -3,13 +3,13 @@ extends CharacterBody2D
 @export var damage: int = 200
 var target: Vector2
 var direction: Vector2
-var speed: float = 5000
+var speed: float = 8000
 
 func _ready() -> void:
 	direction = position.direction_to(target)
 
 func _physics_process(delta: float) -> void:
-	if $ThrowTime.time_left < 1.9:
+	if $ThrowTime.time_left < 0.9:
 		$CollisionShape2D.disabled = false
 	if not $ThrowTime.is_stopped():
 		velocity = direction * speed * delta
