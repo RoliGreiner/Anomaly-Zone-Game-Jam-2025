@@ -1,18 +1,27 @@
 extends CharacterBody2D
 class_name Player
 
+@export_group("Player stats")
 @export var level: int = 1
 @export var speed: int = 3500
 @export var max_health: float = 100.0
 @export var healt: float = 100.0
-@export var exp: int = 0
+@export var current_exp: int = 0
 @export var exp_to_next_level: float = 100
 @export var damage: float = 20.0
 @export var rpm: int = 600
 @export var mag_size: int = 30
-@export var bullet_left: int
+@export var bullet_left: int = 30
 @export var dodge_speed: int = 50
 @export var current_state: states = states.IDLE
+
+@export_category("Cooldown")
+@export var grenade_cooldown: Timer
+@export var reloading_time: Timer
+@export var dodge_cooldown: Timer
+@export var shooting_time: Timer
+
+@export_category("etc")
 @export var crosshair: Sprite2D
 
 var is_reloading = false
@@ -24,27 +33,26 @@ enum states {
 }
 
 signal shooting
+signal throwing_grenade
 signal stats_update
 
 func _init() -> void:
 	bullet_left = mag_size
 
 func _ready() -> void:
-	$GunShooting.wait_time = 60.0 / rpm
+	shooting_time.wait_time = 60.0 / rpm
 
 func _process(delta: float) -> void:
 	crosshair.position = get_local_mouse_position()
-	if $Reloading.is_stopped():
+	if reloading_time.is_stopped():
 		$ReloadingTimeLabel.text = ""
 	else:
-		var text = "Reloading %.1fs" % $Reloading.time_left
-		$ReloadingTimeLabel.text = text
+		$ReloadingTimeLabel.text = "Reloading %.1fs" % reloading_time.time_left
 	
-	if $DodgeCouldown.is_stopped():
+	if dodge_cooldown.is_stopped():
 		$DodgeCooldownLabel.text = "You can dodge"
 	else:
-		var text = "%.1fs" % $DodgeCouldown.time_left
-		$DodgeCooldownLabel.text = text
+		$DodgeCooldownLabel.text = "%.1fs" % dodge_cooldown.time_left
 
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -60,8 +68,11 @@ func _physics_process(delta: float) -> void:
 	Global.player_position = position
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("reload") and $Reloading.is_stopped():
+	if event.is_action_pressed("reload") and reloading_time.is_stopped():
 		Reloading()
+	if event.is_action("throw_grenade") and grenade_cooldown.is_stopped():
+		throwing_grenade.emit()
+		grenade_cooldown.start()
 
 func idle_state(delta: float) -> void:
 	if Input.get_vector("left", "right", "up", "down") != Vector2.ONE:
@@ -71,7 +82,7 @@ func idle_state(delta: float) -> void:
 func move_state(delta: float) -> void:
 	move(delta)
 	
-	if Input.is_action_just_pressed("dodge") and $DodgeCouldown.is_stopped():
+	if Input.is_action_just_pressed("dodge") and dodge_cooldown.is_stopped():
 		current_state = states.DODGE
 	elif Input.is_action_pressed("sprint") and current_state != states.DODGE:
 		velocity *= 1.5
@@ -82,13 +93,13 @@ func dodge_state(delta: float):
 	velocity *= dodge_speed
 	current_state = states.MOVE
 	$CollisionShape2D.disabled = false
-	$DodgeCouldown.start(5)
+	dodge_cooldown.start()
 
 func move(delta: float) -> void:
 	var input_direction = Input.get_vector("left", "right", "up", "down")
 	velocity = input_direction * speed * delta
 
-func reduce_health(amount: int) -> void:
+func ReduceHealth(amount: int) -> void:
 	healt -= amount
 	stats_update.emit()
 	print("Player is damaged with: %.2f" % amount)
@@ -98,6 +109,7 @@ func reduce_health(amount: int) -> void:
 
 func _on_gun_shooting_timeout() -> void:
 	if Input.is_action_pressed("shoot") and (current_state != states.DODGE) and (bullet_left > 0) and not is_reloading:
+		$GunShot.play()
 		shooting.emit()
 		bullet_left -= 1
 		if bullet_left == 0:
@@ -108,19 +120,20 @@ func _on_reloading_timeout() -> void:
 	is_reloading = false
 
 func Reloading() -> void:
+	$Reloading.play()
 	is_reloading = true
-	$Reloading.start()
+	reloading_time.start()
 
 func GainExp(amount: int) -> void:
-	exp += amount
-	if exp >= exp_to_next_level:
+	current_exp += amount
+	if current_exp >= exp_to_next_level:
 		NewLevel()
 	stats_update.emit()
 
 func NewLevel() -> void:
 	print("Next level")
 	level += 1
-	exp -= exp_to_next_level
+	current_exp -= exp_to_next_level
 	exp_to_next_level *= 1.2
 	
 	damage += randi_range(10, 20)
