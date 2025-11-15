@@ -3,7 +3,7 @@ extends Node
 @export var number_of_enemies: int = 5
 @export var min_spawn_distance: int = 300
 @export var max_spawn_distance: int = 400
-@onready var navigation_region: NavigationRegion2D = %NavigationRegion2D
+@export var navigation_region: NavigationRegion2D
 var rnd_position: Vector2
 var enemies_alive: Array[Enemy]
 
@@ -52,5 +52,3 @@ func EnemyDied(exp: int) -> void:
 			enemies_alive.remove_at(i)
 			break
 	enemy_killed.emit(exp)
-	print("Enemies alive")
-	print(enemies_alive)

@@ -6,14 +6,11 @@ class_name Enemy
 @export var health: float
 @export var damage: float = 10.0
 @export var distance_from_player: int = 30
-@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-@onready var healt_bar: ProgressBar = $healthBar
+@export var navigation_agent: NavigationAgent2D
+@export var healt_bar: ProgressBar
 
 signal attack_player
 signal died
-
-func _init() -> void:
-	pass
 
 func _ready() -> void:
 	health = max_health
@@ -26,16 +23,7 @@ func _ready() -> void:
 	ActorSetup.call_deferred()
 
 func _physics_process(delta):
-	velocity = Vector2.ONE
-	
-	navigation_agent.target_position = Global.player_position
-	
-	var current_agent_position: Vector2 = global_position
-	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
-	
-	if navigation_agent.distance_to_target() > distance_from_player:
-		velocity = current_agent_position.direction_to(next_path_position) * speed * delta
-		move_and_slide()
+	Move(delta)
 
 func Create(spawn_position: Vector2) -> void:
 	position = spawn_position
@@ -53,7 +41,14 @@ func ReduceHealth(amount: int):
 		died.emit(exp_drop)
 		queue_free()
 
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is Player:
-		print("Attack player")
-		attack_player.emit(damage)
+func Move(delta: float) -> void:
+	velocity = Vector2.ONE
+	
+	navigation_agent.target_position = Global.player_position
+	
+	var current_agent_position: Vector2 = global_position
+	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
+	
+	if navigation_agent.distance_to_target() > distance_from_player:
+		velocity = current_agent_position.direction_to(next_path_position) * speed * delta
+		move_and_slide()

@@ -2,7 +2,8 @@ extends Node2D
 
 @export_file("*.tscn") var player_scene = "res://scenes/player.tscn"
 @export_file("*.tscn") var bullet_scene = "res://scenes/bullet.tscn"
-@onready var enemy_manager = $EnemyManager
+@export_file("*.tscn") var grenade_scene = "res://scenes/grenade.tscn"
+@export var enemy_manager: Node
 @export_file("*.tscn") var enemy_types: PackedStringArray
 
 var player: Player
@@ -13,6 +14,7 @@ func _init() -> void:
 	player = load(player_scene).instantiate()
 	player.shooting.connect(PlayerShooting)
 	player.stats_update.connect(UpdateStats)
+	player.throwing_grenade.connect(ThrowingGrenade)
 	Global.player_position = player.position
 	add_child(player)
 
@@ -25,7 +27,7 @@ func _ready() -> void:
 	enemy_manager.enemy_killed.connect(EnemyKilled)
 
 func AttackPlayer(damage: int) -> void:
-	player.reduce_health(damage)
+	player.ReduceHealth(damage)
 
 func _on_enemy_spawner_cooldown_timeout() -> void:
 	print("cooldown timeout")
@@ -45,6 +47,14 @@ func PlayerShooting() -> void:
 	bullet.look_at(target_position)
 	add_child(bullet)
 
+func ThrowingGrenade() -> void:
+	var grenade: Node2D = load(grenade_scene).instantiate()
+	var target_position = get_global_mouse_position()
+	
+	grenade.position = player.position
+	grenade.set("target", target_position)
+	add_child(grenade)
+
 func EnemyKilled(exp: int) -> void:
 	player.GainExp(exp)
 
@@ -53,6 +63,7 @@ func UpdateStats() -> void:
 	UpdateHealt()
 	UpdateLevel()
 	UpdateExp()
+	UpdateGrenade()
 
 func UpdateMag() -> void:
 	%Mag.text = " Magazine %d/%d" % [player.mag_size, player.bullet_left]
@@ -64,4 +75,10 @@ func UpdateLevel() -> void:
 	%Level.text = "%d Lvl" % player.level
 
 func UpdateExp() -> void:
-	%ProgressBar.value = player.exp / player.exp_to_next_level
+	%ProgressBar.value = player.current_exp / player.exp_to_next_level
+
+func UpdateGrenade() -> void:
+	if player.grenade_cooldown.is_stopped():
+		%Grenade.get_node("Label").text = "Grenade available"
+	else:
+		%Grenade.get_node("Label").text = "%.1fs" % player.grenade_cooldown.time_left

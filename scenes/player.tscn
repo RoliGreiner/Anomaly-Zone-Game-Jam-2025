@@ -1,14 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcve70sqxk2u2"]
+[gd_scene load_steps=7 format=3 uid="uid://dcve70sqxk2u2"]
 
 [ext_resource type="Script" uid="uid://ddf8q153oarg1" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://y0vrkel4nud7" path="res://icon.svg" id="2_g2els"]
 [ext_resource type="Texture2D" uid="uid://dbf1akcxyv137" path="res://assets/crosshair.png" id="3_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://dpowuppiomc3r" path="res://audios/akm-gunshot.mp3" id="4_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://lfp8ntpe41vb" path="res://audios/ak47-reloading.mp3" id="5_qlg0r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(16, 16)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("crosshair")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("grenade_cooldown", "reloading_time", "dodge_cooldown", "shooting_time", "crosshair")]
 script = ExtResource("1_3vyb7")
+grenade_cooldown = NodePath("GrenadeCooldown")
+reloading_time = NodePath("ReloadingTimer")
+dodge_cooldown = NodePath("DodgeCooldown")
+shooting_time = NodePath("ShootingTimer")
 crosshair = NodePath("Crosshair")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -28,6 +34,7 @@ offset_right = 38.5
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 horizontal_alignment = 1
 
 [node name="ReloadingTimeLabel" type="Label" parent="."]
@@ -39,12 +46,13 @@ offset_top = -11.5
 offset_right = 68.0
 offset_bottom = 11.5
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+zoom = Vector2(4, 4)
 
 [node name="Crosshair" type="Sprite2D" parent="."]
 z_index = 5
@@ -52,16 +60,31 @@ position = Vector2(64, -7)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_qhqgy")
 
-[node name="DodgeCouldown" type="Timer" parent="."]
+[node name="DodgeCooldown" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
-[node name="GunShooting" type="Timer" parent="."]
+[node name="ShootingTimer" type="Timer" parent="."]
 autostart = true
 
-[node name="Reloading" type="Timer" parent="."]
-wait_time = 3.0
+[node name="ReloadingTimer" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 
-[connection signal="timeout" from="GunShooting" to="." method="_on_gun_shooting_timeout"]
-[connection signal="timeout" from="Reloading" to="." method="_on_reloading_timeout"]
+[node name="GrenadeCooldown" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="GunShot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_qlg0r")
+volume_db = -5.0
+max_polyphony = 30
+
+[node name="Reloading" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_qlg0r")
+volume_db = 10.0
+
+[connection signal="timeout" from="ShootingTimer" to="." method="_on_gun_shooting_timeout"]
+[connection signal="timeout" from="ReloadingTimer" to="." method="_on_reloading_timeout"]
