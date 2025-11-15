@@ -114,7 +114,7 @@ func ReduceHealth(amount: int) -> void:
 func _on_gun_shooting_timeout() -> void:
 	if Input.is_action_pressed("shoot") and (current_state != states.DODGE) and (bullet_left > 0) and not is_reloading:
 		$muzzle.enabled = true
-		await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.05).timeout
 		$muzzle.enabled = false
 		$GunShot.play()
 		shooting.emit()

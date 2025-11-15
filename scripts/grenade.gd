@@ -17,12 +17,17 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 
 func _on_timer_timeout() -> void:
+	$Grenade.visible = false
 	var bodies_inside = $ExplosionRadius.get_overlapping_bodies()
 	for body in bodies_inside:
 		if body is Enemy or body is Player:
 			body.ReduceHealth(damage)
 	
 	$AudioStreamPlayer2D.play()
-	visible = false
+	$PointLight2D.enabled = true
+	$AnimationPlayer.play("explode")
 	await $AudioStreamPlayer2D.finished
 	queue_free()
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	$PointLight2D.enabled = false
