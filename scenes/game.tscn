@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://stbi58t5etjk"]
+[gd_scene load_steps=15 format=3 uid="uid://stbi58t5etjk"]
 
 [ext_resource type="Script" uid="uid://bq7amhxauiouf" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://di5r2xofgp2uk" path="res://assets/backgroundtest.png" id="2_lbhrr"]
@@ -21,6 +21,9 @@ size = Vector2(545.3793, 273.66354)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p57ef"]
 size = Vector2(758.62024, 287.54297)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_iywne"]
+polygon = PackedVector2Array(-611, 897, 253, 981, 295, 1514, -616, 1494)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5sy4"]
 size = Vector2(898.5, 597.5)
@@ -68,12 +71,14 @@ unique_name_in_owner = true
 navigation_polygon = SubResource("NavigationPolygon_lnu2h")
 
 [node name="Lake" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Lake"]
 position = Vector2(-177, 197)
 shape = SubResource("CircleShape2D_lbhrr")
 
 [node name="Base" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Base"]
 position = Vector2(197.53513, -196.2797)
@@ -82,6 +87,7 @@ scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_iywne")
 
 [node name="Shop" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Shop"]
 position = Vector2(-1244.929, 1488.2853)
@@ -89,18 +95,25 @@ rotation = -0.052359886
 shape = SubResource("RectangleShape2D_p57ef")
 
 [node name="Hospital" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="NavigationRegion2D/Hospital"]
+occluder = SubResource("OccluderPolygon2D_iywne")
+occluder_light_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Hospital"]
 position = Vector2(-167.25, 1207.25)
 shape = SubResource("RectangleShape2D_u5sy4")
 
 [node name="ParkingLot" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/ParkingLot"]
 position = Vector2(806.25, 1389)
 shape = SubResource("RectangleShape2D_gee14")
 
 [node name="Border" type="StaticBody2D" parent="NavigationRegion2D"]
+collision_layer = 3
 
 [node name="North" type="CollisionShape2D" parent="NavigationRegion2D/Border"]
 position = Vector2(144, -501)
@@ -118,20 +131,28 @@ shape = SubResource("RectangleShape2D_vtaks")
 position = Vector2(2049, 561)
 shape = SubResource("RectangleShape2D_vtaks")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.039215688, 0.039215688, 0.05882353, 1)
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="HUD"]
-unique_name_in_owner = true
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 23.0
+[node name="PanelContainer" type="PanelContainer" parent="HUD"]
+custom_minimum_size = Vector2(300, 50)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_bottom = 50.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-size_flags_vertical = 6
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 30
+
+[node name="Label" type="Label" parent="HUD/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 custom_minimum_size = Vector2(0, 50)
@@ -212,5 +233,8 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SpawnPoint" type="Node2D" parent="."]
+position = Vector2(-750, -400)
 
 [connection signal="timeout" from="EnemySpawnerCooldown" to="." method="_on_enemy_spawner_cooldown_timeout"]

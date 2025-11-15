@@ -44,6 +44,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	crosshair.position = get_local_mouse_position()
+	$Flashlight.rotation = position.angle_to_point(crosshair.position * 100)
+	$muzzle.rotation = position.angle_to_point(crosshair.position * 100)
+	
 	if reloading_time.is_stopped():
 		$ReloadingTimeLabel.text = ""
 	else:
@@ -110,6 +113,9 @@ func ReduceHealth(amount: int) -> void:
 
 func _on_gun_shooting_timeout() -> void:
 	if Input.is_action_pressed("shoot") and (current_state != states.DODGE) and (bullet_left > 0) and not is_reloading:
+		$muzzle.enabled = true
+		await get_tree().create_timer(0.1).timeout
+		$muzzle.enabled = false
 		$GunShot.play()
 		shooting.emit()
 		bullet_left -= 1

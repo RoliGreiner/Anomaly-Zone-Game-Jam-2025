@@ -23,6 +23,7 @@ func _process(delta: float) -> void:
 	UpdateStats()
 
 func _ready() -> void:
+	player.position = $SpawnPoint.position
 	enemy_manager.attack_player.connect(AttackPlayer)
 	enemy_manager.enemy_killed.connect(EnemyKilled)
 
