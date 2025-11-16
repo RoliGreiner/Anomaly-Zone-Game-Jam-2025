@@ -12,6 +12,21 @@ height = 6.000001
 [sub_resource type="CircleShape2D" id="CircleShape2D_vhiwl"]
 radius = 100.0
 
+[sub_resource type="Animation" id="Animation_snp8f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
 [sub_resource type="Animation" id="Animation_76ndk"]
 resource_name = "explode"
 length = 0.5
@@ -26,21 +41,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(0.21022403, 0.21022403),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05), Vector2(1.5, 1.5)]
-}
-
-[sub_resource type="Animation" id="Animation_snp8f"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PointLight2D:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t0o0f"]
@@ -95,5 +95,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_t0o0f")
 }
 
-[connection signal="timeout" from="FuzeTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="FuzeTimer" to="." method="_on_fuze_timer_timeout"]
+[connection signal="timeout" from="ThrowTime" to="." method="_on_throw_time_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

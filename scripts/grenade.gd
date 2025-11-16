@@ -10,13 +10,18 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if $ThrowTime.time_left < 0.9:
-		$CollisionShape2D.disabled = false
+		$CollisionShape2D.set_deferred("disabled", false)
+	if $ThrowTime.is_stopped():
+		$CollisionShape2D.set_deferred("disabled", true)
 	if not $ThrowTime.is_stopped():
 		velocity = direction * speed * delta
 		velocity.normalized()
 		move_and_slide()
 
-func _on_timer_timeout() -> void:
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	$PointLight2D.enabled = false
+
+func _on_fuze_timer_timeout() -> void:
 	$Grenade.visible = false
 	var bodies_inside = $ExplosionRadius.get_overlapping_bodies()
 	for body in bodies_inside:
@@ -29,5 +34,5 @@ func _on_timer_timeout() -> void:
 	await $AudioStreamPlayer2D.finished
 	queue_free()
 
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	$PointLight2D.enabled = false
+func _on_throw_time_timeout() -> void:
+	$Grenade.z_index = -1

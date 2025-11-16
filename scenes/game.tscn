@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://stbi58t5etjk"]
+[gd_scene load_steps=16 format=3 uid="uid://stbi58t5etjk"]
 
 [ext_resource type="Script" uid="uid://bq7amhxauiouf" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://di5r2xofgp2uk" path="res://assets/backgroundtest.png" id="2_lbhrr"]
 [ext_resource type="Script" uid="uid://d4jgiwfy3ai7k" path="res://scripts/enemy_manager.gd" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://y0vrkel4nud7" path="res://icon.svg" id="4_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://gs7yjwpg82rh" path="res://assets/grenade.png" id="5_iywne"]
+[ext_resource type="Texture2D" uid="uid://d1klmxrava7pp" path="res://assets/flare.png" id="6_p57ef"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_lnu2h"]
 vertices = PackedVector2Array(312, 1536, 447.5, 1578.5, -830.3281, 1578.5, -646.5, 1536, 161.67188, 1.46875, 125.9375, -34.25, 487.1875, -7.71875, 447.5, 1116, 312, 878.5, 214.0625, 197, -92.11719, -384.84375, -107.49219, -175.42969, -177, -194.0625, -845.27344, 1293.3281, -646.5, 878.5, 511.64063, -340.4922, 2003, -457.5, 2003, 1578.5, -1662.7734, 1336.1719, -1650.0703, 1578.5, -1711, 1578.5, -1711, -457.5, 1165, 1578.5, 1165, 1116, 161.67188, 392.53125, 18.53125, 535.6719, -177, 588.0625, -372.53125, 535.6719, -515.6719, 392.53125, -568.0625, 197, -515.6719, 1.46875, -372.53125, -141.67188)
@@ -42,6 +43,7 @@ script = ExtResource("1_lbhrr")
 player_scene = "uid://dcve70sqxk2u2"
 bullet_scene = "uid://b7sr72vchlgx2"
 grenade_scene = "uid://32cfhnyp58w1"
+flare_scene = "uid://bms2xdvgvryw5"
 enemy_manager = NodePath("EnemyManager")
 enemy_types = PackedStringArray("uid://xq544wsp86tk")
 
@@ -134,10 +136,23 @@ shape = SubResource("RectangleShape2D_vtaks")
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.039215688, 0.039215688, 0.05882353, 1)
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PanelContainer" type="PanelContainer" parent="HUD"]
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arena" type="PanelContainer" parent="CanvasLayer/HUD"]
 custom_minimum_size = Vector2(300, 50)
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -147,76 +162,108 @@ offset_bottom = 50.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HUD/PanelContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/HUD/Arena"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Items" type="PanelContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_vertical = 2
 
-[node name="Ammunation" type="VBoxContainer" parent="HUD/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/Items"]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Mag" type="Label" parent="HUD/HBoxContainer/Ammunation"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 40
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Grenade" type="HBoxContainer" parent="HUD/HBoxContainer/Ammunation"]
+[node name="Grenade" type="HBoxContainer" parent="CanvasLayer/HUD/Items/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="HUD/HBoxContainer/Ammunation/Grenade"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/Items/VBoxContainer/Grenade"]
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_iywne")
 stretch_mode = 3
 
-[node name="Label" type="Label" parent="HUD/HBoxContainer/Ammunation/Grenade"]
+[node name="Label" type="Label" parent="CanvasLayer/HUD/Items/VBoxContainer/Grenade"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 3.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/HBoxContainer"]
+[node name="Flare" type="HBoxContainer" parent="CanvasLayer/HUD/Items/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/Items/VBoxContainer/Flare"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
+texture = ExtResource("6_p57ef")
+stretch_mode = 3
 
-[node name="Level" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/HUD/Items/VBoxContainer/Flare"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 3.0
+theme_override_font_sizes/font_size = 20
+vertical_alignment = 1
+
+[node name="Stats" type="PanelContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -91.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/Stats"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Ammunation" type="VBoxContainer" parent="CanvasLayer/HUD/Stats/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Mag" type="Label" parent="CanvasLayer/HUD/Stats/HBoxContainer/Ammunation"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+size_flags_vertical = 3
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="HUD/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/Stats/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Level" type="Label" parent="CanvasLayer/HUD/Stats/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HUD/Stats/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
@@ -224,12 +271,11 @@ size_flags_vertical = 10
 max_value = 1.0
 show_percentage = false
 
-[node name="Healt" type="Label" parent="HUD/HBoxContainer"]
+[node name="Healt" type="Label" parent="CanvasLayer/HUD/Stats/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+size_flags_vertical = 1
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 vertical_alignment = 1

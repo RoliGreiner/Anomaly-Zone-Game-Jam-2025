@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dcve70sqxk2u2"]
+[gd_scene load_steps=12 format=3 uid="uid://dcve70sqxk2u2"]
 
 [ext_resource type="Script" uid="uid://ddf8q153oarg1" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://y0vrkel4nud7" path="res://icon.svg" id="2_g2els"]
@@ -6,18 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://dbf1akcxyv137" path="res://assets/crosshair.png" id="3_qhqgy"]
 [ext_resource type="AudioStream" uid="uid://dpowuppiomc3r" path="res://audios/akm-gunshot.mp3" id="4_qlg0r"]
 [ext_resource type="AudioStream" uid="uid://lfp8ntpe41vb" path="res://audios/ak47-reloading.mp3" id="5_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://b2p7dcpd2xeg4" path="res://audios/walking.mp3" id="6_y4r1p"]
+[ext_resource type="AudioStream" uid="uid://cyohu562b4bwl" path="res://audios/running.mp3" id="7_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://bdv1whxjh4ajd" path="res://assets/flash_light.png" id="7_fjrip"]
 [ext_resource type="Texture2D" uid="uid://derklsniakm0u" path="res://assets/muzzle_flash.png" id="7_smehm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(16, 16)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("grenade_cooldown", "reloading_time", "dodge_cooldown", "shooting_time", "crosshair")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("grenade_cooldown", "reloading_time", "dodge_cooldown", "shooting_time", "flare_cooldown", "crosshair")]
 script = ExtResource("1_3vyb7")
-grenade_cooldown = NodePath("GrenadeCooldown")
-reloading_time = NodePath("ReloadingTimer")
-dodge_cooldown = NodePath("DodgeCooldown")
-shooting_time = NodePath("ShootingTimer")
+grenade_cooldown = NodePath("Timers/GrenadeCooldown")
+reloading_time = NodePath("Timers/ReloadingTimer")
+dodge_cooldown = NodePath("Timers/DodgeCooldown")
+shooting_time = NodePath("Timers/ShootingTimer")
+flare_cooldown = NodePath("Timers/FlareCooldown")
 crosshair = NodePath("Crosshair")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -63,19 +66,25 @@ position = Vector2(64, -7)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_qhqgy")
 
-[node name="DodgeCooldown" type="Timer" parent="."]
+[node name="Timers" type="Node" parent="."]
+
+[node name="DodgeCooldown" type="Timer" parent="Timers"]
 wait_time = 5.0
 one_shot = true
 
-[node name="ShootingTimer" type="Timer" parent="."]
+[node name="ShootingTimer" type="Timer" parent="Timers"]
 autostart = true
 
-[node name="ReloadingTimer" type="Timer" parent="."]
+[node name="ReloadingTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 one_shot = true
 
-[node name="GrenadeCooldown" type="Timer" parent="."]
+[node name="GrenadeCooldown" type="Timer" parent="Timers"]
 wait_time = 15.0
+one_shot = true
+
+[node name="FlareCooldown" type="Timer" parent="Timers"]
+wait_time = 30.0
 one_shot = true
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
@@ -88,6 +97,14 @@ max_polyphony = 30
 [node name="Reloading" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_qlg0r")
 volume_db = 10.0
+
+[node name="Walk" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_y4r1p")
+parameters/looping = true
+
+[node name="Running" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_d2wvv")
+parameters/looping = true
 
 [node name="Surrounding" type="PointLight2D" parent="."]
 scale = Vector2(2, 2)
@@ -119,5 +136,5 @@ shadow_item_cull_mask = 3
 texture = ExtResource("7_smehm")
 offset = Vector2(32, 0)
 
-[connection signal="timeout" from="ShootingTimer" to="." method="_on_gun_shooting_timeout"]
-[connection signal="timeout" from="ReloadingTimer" to="." method="_on_reloading_timeout"]
+[connection signal="timeout" from="Timers/ShootingTimer" to="." method="_on_gun_shooting_timeout"]
+[connection signal="timeout" from="Timers/ReloadingTimer" to="." method="_on_reloading_timeout"]
