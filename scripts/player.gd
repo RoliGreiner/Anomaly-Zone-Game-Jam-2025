@@ -20,6 +20,7 @@ class_name Player
 @export var reloading_time: Timer
 @export var dodge_cooldown: Timer
 @export var shooting_time: Timer
+@export var flare_cooldown: Timer
 
 @export_category("etc")
 @export var crosshair: Sprite2D
@@ -29,11 +30,13 @@ var is_reloading = false
 enum states {
 	IDLE,
 	MOVE,
+	SPRINT,
 	DODGE,
 }
 
 signal shooting
 signal throwing_grenade
+signal throwing_flare
 signal stats_update
 
 func _init() -> void:
@@ -44,6 +47,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	crosshair.position = get_local_mouse_position()
+	$Flashlight.rotation = position.angle_to_point(crosshair.position * 100)
+	$muzzle.rotation = position.angle_to_point(crosshair.position * 100)
+	
 	if reloading_time.is_stopped():
 		$ReloadingTimeLabel.text = ""
 	else:
@@ -60,6 +66,8 @@ func _physics_process(delta: float) -> void:
 			idle_state(delta)
 		states.MOVE:
 			move_state(delta)
+		states.SPRINT:
+			sprint_state(delta)
 		states.DODGE:
 			dodge_state(delta)
 	
@@ -68,24 +76,48 @@ func _physics_process(delta: float) -> void:
 	Global.player_position = position
 
 func _input(event: InputEvent) -> void:
+	if Input.get_vector("left", "right", "up", "down") == Vector2.ZERO and current_state != states.IDLE:
+		current_state = states.IDLE
+		print("State changed to %s" % states.keys()[current_state])
+		$Running.stop()
+		$Walk.stop()
+	
+	if Input.get_vector("left", "right", "up", "down") != Vector2.ZERO and current_state == states.IDLE:
+		current_state = states.MOVE
+		print("State changed to %s" % states.keys()[current_state])
+		$Running.stop()
+		$Walk.play()
+	
+	if Input.is_action_pressed("sprint") and current_state != states.SPRINT:
+		current_state = states.SPRINT
+		print("State changed to %s" % states.keys()[current_state])
+		$Running.play()
+		$Walk.stop()
+	
+	if Input.is_action_just_pressed("dodge") and dodge_cooldown.is_stopped():
+		current_state = states.DODGE
+		print("State changed to %s" % states.keys()[current_state])
+		$Running.stop()
+		$Walk.stop()
+	
 	if event.is_action_pressed("reload") and reloading_time.is_stopped():
 		Reloading()
 	if event.is_action("throw_grenade") and grenade_cooldown.is_stopped():
 		throwing_grenade.emit()
 		grenade_cooldown.start()
+	if event.is_action("throw_flare") and flare_cooldown.is_stopped():
+		throwing_flare.emit()
+		flare_cooldown.start()
 
 func idle_state(delta: float) -> void:
-	if Input.get_vector("left", "right", "up", "down") != Vector2.ONE:
-		print("State changed to %s" % states.keys()[current_state])
-		current_state = states.MOVE
+	velocity = Vector2.ZERO
 
 func move_state(delta: float) -> void:
 	move(delta)
-	
-	if Input.is_action_just_pressed("dodge") and dodge_cooldown.is_stopped():
-		current_state = states.DODGE
-	elif Input.is_action_pressed("sprint") and current_state != states.DODGE:
-		velocity *= 1.5
+
+func sprint_state(delta: float) -> void:
+	move(delta)
+	velocity *= 1.5
 
 func dodge_state(delta: float):
 	$CollisionShape2D.disabled = true
@@ -110,6 +142,9 @@ func ReduceHealth(amount: int) -> void:
 
 func _on_gun_shooting_timeout() -> void:
 	if Input.is_action_pressed("shoot") and (current_state != states.DODGE) and (bullet_left > 0) and not is_reloading:
+		$muzzle.enabled = true
+		await get_tree().create_timer(0.05).timeout
+		$muzzle.enabled = false
 		$GunShot.play()
 		shooting.emit()
 		bullet_left -= 1

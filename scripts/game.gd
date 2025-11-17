@@ -3,6 +3,7 @@ extends Node2D
 @export_file("*.tscn") var player_scene = "res://scenes/player.tscn"
 @export_file("*.tscn") var bullet_scene = "res://scenes/bullet.tscn"
 @export_file("*.tscn") var grenade_scene = "res://scenes/grenade.tscn"
+@export_file("*.tscn") var flare_scene = "res://scenes/flare.tscn"
 @export var enemy_manager: Node
 @export_file("*.tscn") var enemy_types: PackedStringArray
 
@@ -15,6 +16,7 @@ func _init() -> void:
 	player.shooting.connect(PlayerShooting)
 	player.stats_update.connect(UpdateStats)
 	player.throwing_grenade.connect(ThrowingGrenade)
+	player.throwing_flare.connect(ThrowingFlare)
 	Global.player_position = player.position
 	add_child(player)
 
@@ -23,6 +25,7 @@ func _process(delta: float) -> void:
 	UpdateStats()
 
 func _ready() -> void:
+	player.position = $SpawnPoint.position
 	enemy_manager.attack_player.connect(AttackPlayer)
 	enemy_manager.enemy_killed.connect(EnemyKilled)
 
@@ -55,6 +58,14 @@ func ThrowingGrenade() -> void:
 	grenade.set("target", target_position)
 	add_child(grenade)
 
+func ThrowingFlare() -> void:
+	var flare: Node2D = load(flare_scene).instantiate()
+	var target_position = get_global_mouse_position()
+	
+	flare.position = player.position
+	flare.set("target", target_position)
+	add_child(flare)
+
 func EnemyKilled(exp: int) -> void:
 	player.GainExp(exp)
 
@@ -64,6 +75,7 @@ func UpdateStats() -> void:
 	UpdateLevel()
 	UpdateExp()
 	UpdateGrenade()
+	UpdateFlare()
 
 func UpdateMag() -> void:
 	%Mag.text = " Magazine %d/%d" % [player.mag_size, player.bullet_left]
@@ -79,6 +91,12 @@ func UpdateExp() -> void:
 
 func UpdateGrenade() -> void:
 	if player.grenade_cooldown.is_stopped():
-		%Grenade.get_node("Label").text = "Grenade available"
+		%Grenade.get_node("Label").text = "Grenade available (G)"
 	else:
 		%Grenade.get_node("Label").text = "%.1fs" % player.grenade_cooldown.time_left
+
+func UpdateFlare() -> void:
+	if player.flare_cooldown.is_stopped():
+		%Flare.get_node("Label").text = "Flare available (F)"
+	else:
+		%Flare.get_node("Label").text = "%.1fs" % player.flare_cooldown.time_left
